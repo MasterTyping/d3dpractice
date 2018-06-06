@@ -1,0 +1,3 @@
+﻿  GameFramework.cpp
+d:\workspace\d3dpractice\d3dpractice09\gameframework.cpp(461): warning C4244: '인수': 'WPARAM'에서 'DWORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  d3dpractice09.vcxproj -> D:\WorkSpace\d3dpractice\x64\Debug\d3dpractice09.AirplanePlayer.exe
