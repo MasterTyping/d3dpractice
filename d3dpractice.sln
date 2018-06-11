@@ -19,7 +19,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "d3dpractice07.WireCube", "d
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "d3dpractice08.TurningManyCube", "d3dpractice08\d3dpractice08.vcxproj", "{D1F44400-7E37-4AF3-A547-5C902B5319B4}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "d3dpractice09", "d3dpractice09\d3dpractice09.vcxproj", "{978A9942-B423-4E8B-B710-F282491BED87}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "d3dpractice09.AirplanePlayer", "d3dpractice09\d3dpractice09.vcxproj", "{978A9942-B423-4E8B-B710-F282491BED87}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "d3dpractice10.instancing", "d3dpractice10\d3dpractice10.vcxproj", "{38BA307C-52C6-43D1-809A-FD8F5294E2AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,6 +103,14 @@ Global
 		{978A9942-B423-4E8B-B710-F282491BED87}.Release|x64.Build.0 = Release|x64
 		{978A9942-B423-4E8B-B710-F282491BED87}.Release|x86.ActiveCfg = Release|Win32
 		{978A9942-B423-4E8B-B710-F282491BED87}.Release|x86.Build.0 = Release|Win32
+		{38BA307C-52C6-43D1-809A-FD8F5294E2AE}.Debug|x64.ActiveCfg = Debug|x64
+		{38BA307C-52C6-43D1-809A-FD8F5294E2AE}.Debug|x64.Build.0 = Debug|x64
+		{38BA307C-52C6-43D1-809A-FD8F5294E2AE}.Debug|x86.ActiveCfg = Debug|Win32
+		{38BA307C-52C6-43D1-809A-FD8F5294E2AE}.Debug|x86.Build.0 = Debug|Win32
+		{38BA307C-52C6-43D1-809A-FD8F5294E2AE}.Release|x64.ActiveCfg = Release|x64
+		{38BA307C-52C6-43D1-809A-FD8F5294E2AE}.Release|x64.Build.0 = Release|x64
+		{38BA307C-52C6-43D1-809A-FD8F5294E2AE}.Release|x86.ActiveCfg = Release|Win32
+		{38BA307C-52C6-43D1-809A-FD8F5294E2AE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
