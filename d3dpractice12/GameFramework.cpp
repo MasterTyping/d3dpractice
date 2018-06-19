@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "GameFramework.h"
-
+#define _WITH_PLAYER_TOP
 
 GameFramework::GameFramework()
 {
@@ -261,7 +261,7 @@ void GameFramework::ProcessInput()
 	  
 	  이동 거리는 시간에 비례하도록 한다. 플레이어의 이동 속력은 (50/초)로 가정한다.*/ 
 		if (dwDirection) 
-			m_pPlayer->Move(dwDirection, 50.0f * m_GameTimer.GetTimeElapsed(), true);
+			m_pPlayer->Move(dwDirection, 100.0f * m_GameTimer.GetTimeElapsed(), true);
 	}
 	//플레이어를 실제로 이동하고 카메라를 갱신한다. 중력과 마찰력의 영향을 속도 벡터에 적용한다. 
 	m_pPlayer->Update(m_GameTimer.GetTimeElapsed()); 
@@ -394,9 +394,9 @@ void GameFramework::FrameAdvance()
 	if (m_pScene)
 		m_pScene->Render(m_pd3dCommandList,m_pCamera);
 	//3인칭 카메라일 때 플레이어가 항상 보이도록 렌더링한다.
-#ifdef _WITH_PLAYER_TOP //렌더 타겟은 그대로 두고 깊이 버퍼를 1.0으로 지우고 플레이어를 렌더링하면 플레이어는 무조건 그려질 것이다.
+	//렌더 타겟은 그대로 두고 깊이 버퍼를 1.0으로 지우고 플레이어를 렌더링하면 플레이어는 무조건 그려질 것이다.
 	m_pd3dCommandList->ClearDepthStencilView(d3dDsvCPUDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, NULL);
-#endif 
+ 
 	//3인칭 카메라일 때 플레이어를 렌더링한다.
 	if (m_pPlayer) m_pPlayer->Render(m_pd3dCommandList, m_pCamera);
 
@@ -456,13 +456,13 @@ void GameFramework::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPAR
 			switch (wParam) 
 			{ 
 				case VK_F1:
-					if (m_pPlayer) m_pPlayer->ChangeCamera(SPACESHIP_CAMERA, m_GameTimer.GetTimeElapsed());
+					/*%%%*/if (m_pPlayer) m_pCamera = m_pPlayer->ChangeCamera(SPACESHIP_CAMERA, m_GameTimer.GetTimeElapsed());
 					break;
 				case VK_F2:
-					if (m_pPlayer) m_pPlayer->ChangeCamera(FIRST_PERSON_CAMERA, m_GameTimer.GetTimeElapsed());
+					/*%%%*/if (m_pPlayer) m_pCamera = m_pPlayer->ChangeCamera(FIRST_PERSON_CAMERA, m_GameTimer.GetTimeElapsed());
 					break;
 				case VK_F3:
-					if (m_pPlayer) m_pPlayer->ChangeCamera(THIRD_PERSON_CAMERA, m_GameTimer.GetTimeElapsed());
+					/*%%%*/if (m_pPlayer) m_pCamera = m_pPlayer->ChangeCamera(THIRD_PERSON_CAMERA, m_GameTimer.GetTimeElapsed());
 					break;
 				case VK_ESCAPE: ::PostQuitMessage(0);
 					break; 

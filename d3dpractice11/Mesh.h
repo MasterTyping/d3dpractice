@@ -43,6 +43,8 @@ public:
 	void AddRef() { m_nReferences++; } 
 	void Release() { if (--m_nReferences <= 0) delete this; }
 	void ReleaseUploadBuffers();
+	virtual void Render(ID3D12GraphicsCommandList *pd3dCommandList, UINT nInstances);
+
 protected:
 	ID3D12Resource * m_pd3dVertexBuffer = NULL;
 	ID3D12Resource *m_pd3dVertexUploadBuffer = NULL;
@@ -65,21 +67,12 @@ protected:
 	//인덱스 버퍼의 인덱스에 더해질 인덱스이다. 
 public: 
 	virtual void Render(ID3D12GraphicsCommandList *pd3dCommandList);
-	virtual void Render(ID3D12GraphicsCommandList *pd3dCommandList, UINT nInstances);
-	virtual void Render(ID3D12GraphicsCommandList *pd3dCommandList, UINT nInstances, D3D12_VERTEX_BUFFER_VIEW d3dInstancingBufferView);
-
 };
 class CTriangleMesh : public CMesh {
 public:   
 	CTriangleMesh();
 	CTriangleMesh(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList);  
 	virtual ~CTriangleMesh() { } 
-};
-class CWallMesh : public CMesh {
-public:
-	CWallMesh(ID3D12Device *pd3dDevice, ID3D12GraphicsCommandList *pd3dCommandList,float fWidth, float fHeight, float fDepth);
-	virtual ~CWallMesh();
-
 };
 class CCubeMeshDiffused : public CMesh {
 public: 

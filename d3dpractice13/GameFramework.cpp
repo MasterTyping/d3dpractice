@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "GameFramework.h"
-
+#define _WITH_PLAYER_TOP
 
 GameFramework::GameFramework()
 {
 	
-	_tcscpy_s(m_pszFrameRate, _T("Instance ("));
+	_tcscpy_s(m_pszFrameRate, _T("Terrains ("));
 	m_pdxgiFactory = NULL;
 	m_pdxgiSwapChain = NULL;
 	m_pd3dDevice = NULL;
@@ -140,7 +140,9 @@ void GameFramework::CreateDirect3DDevice()
 	m_bMsaa4xEnable = (m_nMsaa4xQualityLevels > 1) ? true : false; //다중 샘플의 품질 수준이 1보다 크면 다중 샘플링을 활성화한다. 
 	m_pd3dDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, __uuidof(ID3D12Fence), (void **)&m_pd3dFence); 
 	for (UINT i = 0; i < m_nSwapChainBuffers; i++) m_nFenceValues[i] = 0;
-	m_hFenceEvent = ::CreateEvent(NULL, FALSE, FALSE, NULL); /*펜스와 동기화를 위한 이벤트 객체를 생성한다(이벤트 객체의 초기값을 FALSE이다). 이벤트가 실행되면(Signal) 이 벤트의 값을 자동적으로 FALSE가 되도록 생성한다.*/
+	m_hFenceEvent = ::CreateEvent(NULL, FALSE, FALSE, NULL); 
+	/*펜스와 동기화를 위한 이벤트 객체를 생성한다(이벤트 객체의 초기값을 FALSE이다). 
+	이벤트가 실행되면(Signal) 이 벤트의 값을 자동적으로 FALSE가 되도록 생성한다.*/
 
 	if (pd3dAdapter) pd3dAdapter->Release();
 
@@ -189,8 +191,8 @@ void GameFramework::BuildObjects()
 	//씬 객체를 생성하고 씬에 포함될 게임 객체들을 생성한다.
 	m_pScene = new CScene(); 
 	m_pScene->BuildObjects(m_pd3dDevice, m_pd3dCommandList);
-	CAirplanePlayer *pAirplanePlayer = new CAirplanePlayer(m_pd3dDevice, m_pd3dCommandList, m_pScene->GetGraphicsRootSignature());
-	m_pPlayer = pAirplanePlayer; 
+	m_pPlayer = new CTerrainPlayer(m_pd3dDevice, m_pd3dCommandList,
+		m_pScene->GetGraphicsRootSignature(), m_pScene->GetTerrain(), 1);
 	m_pCamera = m_pPlayer->GetCamera();
 
 	//씬 객체를 생성하기 위하여 필요한 그래픽 명령 리스트들을 명령 큐에 추가한다.
@@ -261,7 +263,7 @@ void GameFramework::ProcessInput()
 	  
 	  이동 거리는 시간에 비례하도록 한다. 플레이어의 이동 속력은 (50/초)로 가정한다.*/ 
 		if (dwDirection) 
-			m_pPlayer->Move(dwDirection, 50.0f * m_GameTimer.GetTimeElapsed(), true);
+			m_pPlayer->Move(dwDirection, 100.0f * m_GameTimer.GetTimeElapsed(), true);
 	}
 	//플레이어를 실제로 이동하고 카메라를 갱신한다. 중력과 마찰력의 영향을 속도 벡터에 적용한다. 
 	m_pPlayer->Update(m_GameTimer.GetTimeElapsed()); 
@@ -394,9 +396,9 @@ void GameFramework::FrameAdvance()
 	if (m_pScene)
 		m_pScene->Render(m_pd3dCommandList,m_pCamera);
 	//3인칭 카메라일 때 플레이어가 항상 보이도록 렌더링한다.
-#ifdef _WITH_PLAYER_TOP //렌더 타겟은 그대로 두고 깊이 버퍼를 1.0으로 지우고 플레이어를 렌더링하면 플레이어는 무조건 그려질 것이다.
+	//렌더 타겟은 그대로 두고 깊이 버퍼를 1.0으로 지우고 플레이어를 렌더링하면 플레이어는 무조건 그려질 것이다.
 	m_pd3dCommandList->ClearDepthStencilView(d3dDsvCPUDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, NULL);
-#endif 
+ 
 	//3인칭 카메라일 때 플레이어를 렌더링한다.
 	if (m_pPlayer) m_pPlayer->Render(m_pd3dCommandList, m_pCamera);
 
@@ -456,13 +458,13 @@ void GameFramework::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPAR
 			switch (wParam) 
 			{ 
 				case VK_F1:
-					if (m_pPlayer) m_pPlayer->ChangeCamera(SPACESHIP_CAMERA, m_GameTimer.GetTimeElapsed());
+					/*%%%*/if (m_pPlayer) m_pCamera = m_pPlayer->ChangeCamera(SPACESHIP_CAMERA, m_GameTimer.GetTimeElapsed());
 					break;
 				case VK_F2:
-					if (m_pPlayer) m_pPlayer->ChangeCamera(FIRST_PERSON_CAMERA, m_GameTimer.GetTimeElapsed());
+					/*%%%*/if (m_pPlayer) m_pCamera = m_pPlayer->ChangeCamera(FIRST_PERSON_CAMERA, m_GameTimer.GetTimeElapsed());
 					break;
 				case VK_F3:
-					if (m_pPlayer) m_pPlayer->ChangeCamera(THIRD_PERSON_CAMERA, m_GameTimer.GetTimeElapsed());
+					/*%%%*/if (m_pPlayer) m_pCamera = m_pPlayer->ChangeCamera(THIRD_PERSON_CAMERA, m_GameTimer.GetTimeElapsed());
 					break;
 				case VK_ESCAPE: ::PostQuitMessage(0);
 					break; 

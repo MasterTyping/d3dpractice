@@ -6,7 +6,9 @@ class CVertex
 protected:
 	//정점의 위치 벡터이다(모든 정점은 최소한 위치 벡터를 가져야 한다).   
 	XMFLOAT3 m_xmf3Position;
+	
 public:
+	
 	CVertex() { m_xmf3Position = XMFLOAT3(0.0f, 0.0f, 0.0f); } 
 	CVertex(XMFLOAT3 xmf3Position)
 	{ m_xmf3Position = xmf3Position; } 
@@ -29,6 +31,8 @@ public:
 	{ 
 		m_xmf3Position = xmf3Position; m_xmf4Diffuse = xmf4Diffuse;
 	}
+	XMFLOAT4 GetDiffuse() { return m_xmf4Diffuse; }
+	void SetDiffuse(XMFLOAT4 color) { m_xmf4Diffuse = color; }
 	~CDiffusedVertex() { }
 };
 class CMesh
@@ -40,10 +44,12 @@ public:
 private: 
 	int m_nReferences = 0;
 public:
+	
 	void AddRef() { m_nReferences++; } 
 	void Release() { if (--m_nReferences <= 0) delete this; }
 	void ReleaseUploadBuffers();
 protected:
+	BoundingOrientedBox m_xmBoundingBox;
 	ID3D12Resource * m_pd3dVertexBuffer = NULL;
 	ID3D12Resource *m_pd3dVertexUploadBuffer = NULL;
 	D3D12_VERTEX_BUFFER_VIEW m_d3dVertexBufferView;
@@ -64,10 +70,11 @@ protected:
 	int m_nBaseVertex = 0; 
 	//인덱스 버퍼의 인덱스에 더해질 인덱스이다. 
 public: 
+	
 	virtual void Render(ID3D12GraphicsCommandList *pd3dCommandList);
 	virtual void Render(ID3D12GraphicsCommandList *pd3dCommandList, UINT nInstances);
 	virtual void Render(ID3D12GraphicsCommandList *pd3dCommandList, UINT nInstances, D3D12_VERTEX_BUFFER_VIEW d3dInstancingBufferView);
-
+	BoundingOrientedBox GetBoundingBox() { return (m_xmBoundingBox); }
 };
 class CTriangleMesh : public CMesh {
 public:   

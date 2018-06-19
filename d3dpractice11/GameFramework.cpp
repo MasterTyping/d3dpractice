@@ -5,7 +5,7 @@
 GameFramework::GameFramework()
 {
 	
-	_tcscpy_s(m_pszFrameRate, _T("Instance ("));
+	_tcscpy_s(m_pszFrameRate, _T("Airplane ("));
 	m_pdxgiFactory = NULL;
 	m_pdxgiSwapChain = NULL;
 	m_pd3dDevice = NULL;
@@ -456,13 +456,9 @@ void GameFramework::OnProcessingKeyboardMessage(HWND hWnd, UINT nMessageID, WPAR
 			switch (wParam) 
 			{ 
 				case VK_F1:
-					if (m_pPlayer) m_pPlayer->ChangeCamera(SPACESHIP_CAMERA, m_GameTimer.GetTimeElapsed());
-					break;
 				case VK_F2:
-					if (m_pPlayer) m_pPlayer->ChangeCamera(FIRST_PERSON_CAMERA, m_GameTimer.GetTimeElapsed());
-					break;
 				case VK_F3:
-					if (m_pPlayer) m_pPlayer->ChangeCamera(THIRD_PERSON_CAMERA, m_GameTimer.GetTimeElapsed());
+					if (m_pPlayer) m_pPlayer->ChangeCamera((wParam - VK_F1 + 1), m_GameTimer.GetTimeElapsed());
 					break;
 				case VK_ESCAPE: ::PostQuitMessage(0);
 					break; 

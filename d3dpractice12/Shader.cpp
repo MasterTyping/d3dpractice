@@ -374,8 +374,9 @@ void CInstancingShader::CreateShaderVariables(ID3D12Device * pd3dDevice, ID3D12G
 void CInstancingShader::UpdateShaderVariables(ID3D12GraphicsCommandList * pd3dCommandList)
 {
 	for (int j = 0; j < m_nObjects; j++) {
-		m_pcbMappedGameObjects[j].m_xmcColor = (j % 2) ? XMFLOAT4(0.5f, 0.0f, 0.0f, 0.0f) :
-			XMFLOAT4(0.0f, 0.0f, 0.5f, 0.0f);
+		//m_pcbMappedGameObjects[j].m_xmcColor = (j % 2) ? XMFLOAT4(0.5f, 0.0f, 0.0f, 0.0f) :
+		//	XMFLOAT4(0.0f, 0.0f, 0.5f, 0.0f);
+		m_pcbMappedGameObjects[j].m_xmcColor = XMFLOAT4(0.f,0.f,0.f,0.f);
 		XMStoreFloat4x4(&m_pcbMappedGameObjects[j].m_xmf4x4Transform,
 			XMMatrixTranspose(XMLoadFloat4x4(&m_ppObjects[j]->GetMatrix())));
 	}
@@ -389,7 +390,7 @@ void CInstancingShader::ReleaseShaderVariables()
 
 void CInstancingShader::BuildObjects(ID3D12Device * pd3dDevice, ID3D12GraphicsCommandList * pd3dCommandList)
 {
-	int xObjects = 2, yObjects = 2, zObjects = 2, i = 0;
+	int xObjects = 3, yObjects = 3, zObjects = 3, i = 0;
 	m_nObjects = (xObjects * 2 + 1) * (yObjects * 2 + 1) * (zObjects * 2 + 1);
 	m_ppObjects = new CGameObject*[m_nObjects];
 	float fxPitch = 12.0f * 4.5f; float fyPitch = 12.0f * 4.5f; float fzPitch = 12.0f * 4.5f;
@@ -403,8 +404,9 @@ void CInstancingShader::BuildObjects(ID3D12Device * pd3dDevice, ID3D12GraphicsCo
 				
 					pRotatingObject = new CRotatingObject();
 					pRotatingObject->SetPosition(fxPitch*x, fyPitch*y, fzPitch*z);
-					pRotatingObject->SetRotationAxis(XMFLOAT3(1.0f, 1.0f, 1.0f));
-					pRotatingObject->SetRotationSpeed(100.0f);
+					pRotatingObject->SetRotationAxis(XMFLOAT3(0.0f, 1.0f, 0.0f));
+					pRotatingObject->SetRotationSpeed(200.0f);
+					
 					m_ppObjects[i++] = pRotatingObject;
 				
 			} 
